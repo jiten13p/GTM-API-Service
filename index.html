@@ -51,9 +51,27 @@
     <button id="state" onclick="state()">
       State
     </button>
+    <br />
 
     <!-- accounts -->
     <div id="accounts"></div>
+    <br />
+
+    <!-- select accounts -->
+    <select id="select-account" onchange="getSelectedAccount()">
+      <option value="one" path="1">one</option>
+      <option value="two" path="3">two</option>
+      <option value="three" path="3">three</option>
+    </select>
+    <br />
+
+    <!-- select container -->
+    <select id="select-container" onchange="getSelectedContainer()">
+      <option value="one">one</option>
+      <option value="two">two</option>
+      <option value="three">three</option>
+    </select>
+
     <!-- default code -->
     <div id="authorize-div" style="display: none;">
       <span>Authorize access to Tag Manager API</span>

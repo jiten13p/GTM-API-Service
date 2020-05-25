@@ -12,6 +12,7 @@ var SCOPES = [
 ];
 
 // Parameter values used by the script
+ACCOUNTS = [];
 ACCOUNT_PATH = "accounts/6001211589";
 CONTAINER_NAME = "Greetings";
 WORKSPACE_NAME = "Example workspace";
@@ -143,6 +144,7 @@ function createWorkspace(container) {
 async function getAccounts() {
   const div = document.createElement("div");
   await findAccounts().then((res) => {
+    ACCOUNTS = res;
     res.forEach((element) => {
       const p = document.createElement("p");
       p.innerHTML = `AccountId: ${element.accountId} <br/> Path: ${element.path} <br/> Name: ${element.name} <br/>`;
@@ -150,6 +152,51 @@ async function getAccounts() {
     });
   });
   document.getElementById("accounts").appendChild(div);
+  SelectAccount();
+}
+
+//Select Account
+function SelectAccount() {
+  const select = document.getElementById("select-account");
+  ACCOUNTS.forEach((element) => {
+    const option = document.createElement("option");
+    option.setAttribute("value", element.name);
+    option.setAttribute("path", element.path);
+    option.innerText = element.name;
+    select.appendChild(option);
+  });
+}
+
+// get Selected Account
+function getSelectedAccount() {
+  const select = document.getElementById("select-account");
+  var selectedAccount = select.options[select.selectedIndex].getAttribute(
+    "path"
+  );
+  console.log(selectedAccount);
+  selectContainer(selectedAccount);
+}
+
+//Select Container
+function selectContainer(selectedAccount) {
+  const select = document.getElementById("select-container");
+  findContainers(selectedAccount).then((res) => {
+    res.forEach((element) => {
+      const option = document.createElement("option");
+      option.setAttribute("value", element.containerId);
+      option.innerText = element.name + ": " + element.containerId;
+      select.appendChild(option);
+    });
+  });
+}
+
+// get Selected Account
+function getSelectedContainer() {
+  const select = document.getElementById("select-container");
+  var selectedContainer = select.options[select.selectedIndex].getAttribute(
+    "value"
+  );
+  console.log(selectedContainer);
 }
 
 //State
