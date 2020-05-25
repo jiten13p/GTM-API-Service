@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="GTM, Google Tag Manager, Google Analytics" />
+
+    <meta name="title" content="GTM" />
+    <meta name="description" content="GTM-APP" />
+    <meta name="author" href="" content="" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <meta property="og:site_name" content="GTM-APP" />
+    <meta property="og:title" content="GTM-APP" />
+    <meta property="og:description" content="" />
+    <meta property="og:image" itemprop="image" content="" />
+
+    <title>GTM-APP</title>
+
+    <!-- logo on tab -->
+    <link rel="icon" href="" />
+
+    <!-- font awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+
+    <!--css files-->
+    <link rel="stylesheet" href="./style.css" />
+
+    <!--google fonts-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato|Montserrat|Open+Sans|Poppins|Roboto|Source+Sans+Pro&display=swap"
+      rel="stylesheet"
+    />
+    <script src="./script.js"></script>
+    <script src="https://apis.google.com/js/client.js"></script>
+  </head>
+  <body>
+    <h1>HELLO GTM</h1>
+    <button id="auth" onclick="checkAuth()">
+      Call Auth
+    </button>
+    <button id="state" onclick="getAccounts()">
+      Get Accounts
+    </button>
+    <button id="state" onclick="state()">
+      State
+    </button>
+
+    <!-- accounts -->
+    <div id="accounts"></div>
+    <!-- default code -->
+    <div id="authorize-div" style="display: none;">
+      <span>Authorize access to Tag Manager API</span>
+      <button id="authorize-button" onclick="handleAuthClick(event)">
+        Authorize
+      </button>
+    </div>
+    <pre id="output"></pre>
+  </body>
+</html>
