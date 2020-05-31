@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounts</title>
+
+    <link rel="stylesheet" href="../css/style.css" />
+
+    <script src="../js/auth.js?onload=checkAuth"></script>
+    <script src="https://apis.google.com/js/client.js?onload=callAuth"></script>
+    <script src="../js/account.js"></script>
+  </head>
+  <body>
+    <div class="account">
+      <h1>ACCOUNTS</h1>
+      <button
+        class="btn btn-success"
+        type="button"
+        id="getAccounts"
+        style="margin-bottom: 10px;"
+        disabled
+        onclick="getAccounts()"
+      >
+        Get Accounts
+      </button>
+
+      <!-- accounts -->
+      <div id="accounts"></div>
+      <br />
+
+      <!-- select accounts -->
+      <select class="btn" id="select-account" onchange="getSelectedAccount()">
+        <option value="NULL" path="NULL">Select</option>
+      </select>
+      <br />
+
+      <!-- select container -->
+      <select
+        class="btn"
+        id="select-container"
+        style="margin-top: 10px;"
+        onchange="getSelectedContainer()"
+      >
+        <option value="NULL">Select</option>
+      </select>
+      <br />
+
+      <a
+        class="btn btn-proceed"
+        style="margin-top: 10px;"
+        href="../pages/service.html"
+        >Proceed</a
+      >
+    </div>
+  </body>
+</html>

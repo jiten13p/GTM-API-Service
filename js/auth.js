@@ -61,6 +61,7 @@ function runTagManager() {
   return new Promise((resolve, reject) => {
     console.log("Running Tag Manager.");
     SUCCESS = true;
+    Success();
     var trigger = null;
     var workspace = null;
     resolve();

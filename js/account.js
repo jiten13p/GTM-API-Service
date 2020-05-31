@@ -1,3 +1,8 @@
+//Success function
+function Success() {
+  document.getElementById("getAccounts").disabled = false;
+}
+
 //Find Accounts
 function findAccounts() {
   document.getElementById("getAccounts").disabled = true;
@@ -79,16 +84,22 @@ function SelectAccount() {
 function getSelectedAccount() {
   const select = document.getElementById("select-account");
   var selectedAccount = select.options[select.selectedIndex].getAttribute(
+    "value"
+  );
+  sessionStorage.clear();
+  sessionStorage.setItem("ACCOUNT", selectedAccount);
+  var selectedAccountPath = select.options[select.selectedIndex].getAttribute(
     "path"
   );
-  console.log(selectedAccount);
-  selectContainer(selectedAccount);
+  sessionStorage.setItem("ACCOUNT_PATH", selectedAccountPath);
+  console.log(selectedAccountPath);
+  selectContainer(selectedAccountPath);
 }
 
 //Select Container
-function selectContainer(selectedAccount) {
+function selectContainer(selectedAccountPath) {
   const select = document.getElementById("select-container");
-  findContainers(selectedAccount).then((res) => {
+  findContainers(selectedAccountPath).then((res) => {
     res.forEach((element) => {
       const option = document.createElement("option");
       option.setAttribute("value", element.containerId);

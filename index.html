@@ -30,22 +30,29 @@
     />
 
     <!--css files-->
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./css/style.css" />
 
     <!--google fonts-->
     <link
       href="https://fonts.googleapis.com/css?family=Lato|Montserrat|Open+Sans|Poppins|Roboto|Source+Sans+Pro&display=swap"
       rel="stylesheet"
     />
-    <script src="auth.js"></script>
+    <script src="./js/auth.js"></script>
     <script src="https://apis.google.com/js/client.js"></script>
+    <script src="./js/script.js"></script>
   </head>
   <body>
-    <h1>HELLO GTM</h1>
-    <button id="auth" onclick="checkAuth()">
-      SignIn
-    </button>
-
-    <a href="account.html">Proceed</a>
+    <div class="index">
+      <h1>HELLO GTM</h1>
+      <button
+        class="btn btn-success"
+        style="margin-bottom: 10px;"
+        id="auth"
+        onclick="checkAuth()"
+      >
+        SignIn
+      </button>
+      <a class="btn btn-proceed" href="./pages/account.html">Proceed</a>
+    </div>
   </body>
 </html>
