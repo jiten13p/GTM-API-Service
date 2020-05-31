@@ -10,6 +10,10 @@ html {
   align-items: center;
 }
 
+.blur {
+  color: lightgrey;
+}
+
 .btn {
   font-size: 16px;
   padding: 6px 12px;
