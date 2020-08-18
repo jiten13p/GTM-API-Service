@@ -116,5 +116,11 @@ function getSelectedContainer() {
   var selectedContainer = select.options[select.selectedIndex].getAttribute(
     "value"
   );
-  console.log(selectedContainer);
+  sessionStorage.setItem("CONTAINER", selectedContainer);
+  var selectedContainerName = select.options[select.selectedIndex].innerText;
+
+  var selectedContainerName = selectedContainerName.split(":")[0];
+
+  sessionStorage.setItem("CONTAINER_NAME", selectedContainerName);
+  console.log(selectedContainerName);
 }

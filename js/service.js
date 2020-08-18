@@ -8,4 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("account-path").innerText = sessionStorage.getItem(
     "ACCOUNT_PATH"
   );
+  document.getElementById("container-name").innerText = sessionStorage.getItem(
+    "CONTAINER_NAME"
+  );
+  document.getElementById("container").innerText = sessionStorage.getItem(
+    "CONTAINER"
+  );
 });
