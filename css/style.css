@@ -10,15 +10,12 @@ html {
   align-items: center;
 }
 
-.blur {
-  color: lightgrey;
-}
-
 .btn {
   font-size: 16px;
   padding: 6px 12px;
   margin-bottom: 0;
 
+  background-color: #eeeeee;
   display: inline-block;
   text-decoration: none;
   text-align: center;
@@ -53,7 +50,7 @@ html {
 
 .btn-success {
   color: #ffffff;
-  background:none;
+  background: none;
   font-weight: bold;
   letter-spacing: 0.05em;
   position: absolute;
@@ -65,14 +62,14 @@ html {
 .btn-success:active,
 .btn-success:focus,
 .btn-success.active {
-    background: #f1f3f4;
-    color: #174ea6;
-    border-color: #f1f3f4;
+  background: #f1f3f4;
+  color: #174ea6;
+  border-color: #f1f3f4;
 }
 
 .btn-proceed {
   color: #ffffff;
-  background:none;
+  background: none;
   font-weight: bold;
   letter-spacing: 0.05em;
   margin-top: 48%;
@@ -84,7 +81,7 @@ html {
 .btn-proceed:active,
 .btn-proceed:focus,
 .btn-proceed.active {
-    background: #f1f3f4;
-    color: #174ea6;
-    border-color: #f1f3f4;
+  background: #f1f3f4;
+  color: #174ea6;
+  border-color: #f1f3f4;
 }

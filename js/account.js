@@ -1,12 +1,16 @@
 //Success function
 function Success() {
   document.getElementById("getAccounts").disabled = false;
-  document.getElementById("getAccounts").classList.add("btn-getAccounts");
+  document.getElementById("getAccounts").classList.add("btn");
+  setTimeout(function () {
+    document.getElementById("getAccounts").click();
+  }, 200);
 }
 
 //Find Accounts
 function findAccounts() {
   document.getElementById("getAccounts").disabled = true;
+  document.getElementById("getAccounts").style.display = "none";
   var request = gapi.client.tagmanager.accounts.list({});
   return requestPromise(request).then((response) => {
     var accounts = response.account || [];
@@ -144,15 +148,16 @@ function tags(path) {
     }
   );
   return requestPromise(request).then((response) => {
+    // console.log(response.tag);
+    console.log("tags list here");
     getTag(response.tag[0].path);
   });
 }
 
 // Get a Tag
 function getTag(path) {
-  console.log(path);
   var request = gapi.client.tagmanager.accounts.containers.workspaces.tags.get({
-    parent: path,
+    path,
   });
   return requestPromise(request).then((response) => {
     console.log(response);
@@ -168,6 +173,20 @@ function triggers(path) {
   );
   return requestPromise(request).then((response) => {
     // console.log(response.trigger);
+    console.log("triggers list here");
+    getTag(response.trigger[0].path);
+  });
+}
+
+// Get a Trigger
+function getTrigger(path) {
+  var request = gapi.client.tagmanager.accounts.containers.workspaces.triggers.get(
+    {
+      path,
+    }
+  );
+  return requestPromise(request).then((response) => {
+    console.log(response);
   });
 }
 
@@ -180,5 +199,19 @@ function variables(path) {
   );
   return requestPromise(request).then((response) => {
     // console.log(response.variable);
+    console.log("vars list here");
+    getTag(response.variable[0].path);
+  });
+}
+
+// Get a Variable
+function getVariable(path) {
+  var request = gapi.client.tagmanager.accounts.containers.workspaces.variables.get(
+    {
+      path,
+    }
+  );
+  return requestPromise(request).then((response) => {
+    console.log(response);
   });
 }
