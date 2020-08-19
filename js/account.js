@@ -1,7 +1,7 @@
 //Success function
 function Success() {
   document.getElementById("getAccounts").disabled = false;
-  document.getElementById("getAccounts").classList.add("btn-success");
+  document.getElementById("getAccounts").classList.add("btn-getAccounts");
 }
 
 //Find Accounts
