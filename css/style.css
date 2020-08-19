@@ -52,21 +52,22 @@ html {
 }
 
 .btn-success {
-  color: #fff;
-  background-color: #5cb85c;
-  border-color: #5cb85c;
+  color: #ffffff;
   font-weight: bold;
   letter-spacing: 0.05em;
   border-radius: 5%;
+  position: absolute;
+  margin-top: 24%;
+  padding: 10px 30px 10px 30px;
 }
 
 .btn-success:hover,
 .btn-success:active,
 .btn-success:focus,
 .btn-success.active {
-  background: #469b46;
-  color: #ffffff;
-  border-color: #469b46;
+    background: #f1f3f4;
+    color: #174ea6;
+    border-color: #f1f3f4;
 }
 
 .btn-proceed {
