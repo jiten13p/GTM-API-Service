@@ -53,6 +53,7 @@ html {
 
 .btn-success {
   color: #ffffff;
+  background:none;
   font-weight: bold;
   letter-spacing: 0.05em;
   border-radius: 5%;
@@ -71,19 +72,21 @@ html {
 }
 
 .btn-proceed {
-  color: #fff;
-  background-color: #0275d8;
-  border-color: #0275d8;
+  color: #ffffff;
+  background:none;
   font-weight: bold;
   letter-spacing: 0.05em;
   border-radius: 5%;
+  margin-top: 48%;
+  position: absolute;
+  padding: 10px 30px 10px 30px;
 }
 
 .btn-proceed:hover,
 .btn-proceed:active,
 .btn-proceed:focus,
 .btn-proceed.active {
-  background: #0366bd;
-  color: #ffffff;
-  border-color: #0366bd;
+    background: #f1f3f4;
+    color: #174ea6;
+    border-color: #f1f3f4;
 }
