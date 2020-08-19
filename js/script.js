@@ -4,6 +4,8 @@ function Success() {
     document.getElementById("auth").innerText = "Success";
     //document.getElementById("proceed").style.display = "none";
     document.getElementById("auth").style.display = "none";
-    setTimeout(function (){document.getElementById("proceed").click()},50);
+    setTimeout(function () {
+      document.getElementById("proceed").click();
+    }, 100);
   }
 }
