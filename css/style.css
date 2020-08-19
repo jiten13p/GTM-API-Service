@@ -36,19 +36,19 @@ html {
 }
 .btn:focus,
 .btn:active:focus {
-  outline: thin dotted;
+  /*outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
+  outline-offset: -2px;*/
 }
 .btn:hover,
 .btn:focus {
   text-decoration: none;
 }
 .btn:active {
-  background-image: none;
+  /*background-image: none;
   outline: 0;
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);*/
 }
 
 .btn-success {
@@ -56,7 +56,6 @@ html {
   background:none;
   font-weight: bold;
   letter-spacing: 0.05em;
-  border-radius: 5%;
   position: absolute;
   margin-top: 24%;
   padding: 10px 30px 10px 30px;
