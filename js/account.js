@@ -44,16 +44,6 @@ function findContainer(accountPath, containerName) {
   });
 }
 
-//Workspace
-function createWorkspace(container) {
-  console.log("Creating workspace in container:" + container.path);
-  var request = gapi.client.tagmanager.accounts.containers.workspaces.create(
-    { parent: container.path },
-    { name: WORKSPACE_NAME, description: "my workspace created via api" }
-  );
-  return requestPromise(request);
-}
-
 //Retrive Accounts
 async function getAccounts() {
   const div = document.createElement("div");
@@ -117,10 +107,78 @@ function getSelectedContainer() {
     "value"
   );
   sessionStorage.setItem("CONTAINER", selectedContainer);
-  var selectedContainerName = select.options[select.selectedIndex].innerText;
+  var selectedContainerPath = select.options[select.selectedIndex].innerText;
 
-  var selectedContainerName = selectedContainerName.split(":")[0];
+  var selectedContainerName = selectedContainerPath.split(":")[0];
 
   sessionStorage.setItem("CONTAINER_NAME", selectedContainerName);
   console.log(selectedContainerName);
+  findWorkspace();
+}
+
+// Find Workspace
+function findWorkspace() {
+  var path =
+    sessionStorage.getItem("ACCOUNT_PATH") +
+    "/containers/" +
+    sessionStorage.getItem("CONTAINER");
+
+  var request = gapi.client.tagmanager.accounts.containers.workspaces.list({
+    parent: path,
+  });
+  return requestPromise(request).then((response) => {
+    var workspacesArr = response;
+    workspacesArr.workspace.forEach((space) => {
+      tags(space.path);
+      triggers(space.path);
+      variables(space.path);
+    });
+  });
+}
+
+// Tags
+function tags(path) {
+  var request = gapi.client.tagmanager.accounts.containers.workspaces.tags.list(
+    {
+      parent: path,
+    }
+  );
+  return requestPromise(request).then((response) => {
+    getTag(response.tag[0].path);
+  });
+}
+
+// Get a Tag
+function getTag(path) {
+  console.log(path);
+  var request = gapi.client.tagmanager.accounts.containers.workspaces.tags.get({
+    parent: path,
+  });
+  return requestPromise(request).then((response) => {
+    console.log(response);
+  });
+}
+
+// Triggers
+function triggers(path) {
+  var request = gapi.client.tagmanager.accounts.containers.workspaces.triggers.list(
+    {
+      parent: path,
+    }
+  );
+  return requestPromise(request).then((response) => {
+    // console.log(response.trigger);
+  });
+}
+
+// Variables
+function variables(path) {
+  var request = gapi.client.tagmanager.accounts.containers.workspaces.variables.list(
+    {
+      parent: path,
+    }
+  );
+  return requestPromise(request).then((response) => {
+    // console.log(response.variable);
+  });
 }
