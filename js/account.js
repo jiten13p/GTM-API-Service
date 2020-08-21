@@ -7,6 +7,9 @@ function Success() {
   }, 200);
 }
 
+//Global
+CTR = {};
+
 //Find Accounts
 function findAccounts() {
   document.getElementById("getAccounts").disabled = true;
@@ -118,6 +121,7 @@ function getSelectedContainer() {
   sessionStorage.setItem("CONTAINER_NAME", selectedContainerName);
   console.log(selectedContainerName);
   findWorkspace();
+  getVersion();
 }
 
 // Find Workspace
@@ -160,7 +164,7 @@ function getTag(path) {
     path,
   });
   return requestPromise(request).then((response) => {
-    console.log(response);
+    // console.log(response);
   });
 }
 
@@ -186,7 +190,7 @@ function getTrigger(path) {
     }
   );
   return requestPromise(request).then((response) => {
-    console.log(response);
+    // console.log(response);
   });
 }
 
@@ -212,6 +216,35 @@ function getVariable(path) {
     }
   );
   return requestPromise(request).then((response) => {
-    console.log(response);
+    // console.log(response);
+  });
+}
+
+// Get CTR by Version
+function getVersion() {
+  var path =
+    sessionStorage.getItem("ACCOUNT_PATH") +
+    "/containers/" +
+    sessionStorage.getItem("CONTAINER");
+
+  console.log(path);
+  var request = gapi.client.tagmanager.accounts.containers.version_headers.latest(
+    {
+      parent: path,
+    }
+  );
+  return requestPromise(request).then((response) => {
+    getCTR(response.path);
+  });
+}
+
+// Get CTR by Version
+function getCTR(path) {
+  var request = gapi.client.tagmanager.accounts.containers.versions.get({
+    path,
+  });
+  return requestPromise(request).then((response) => {
+    CTR = response;
+    console.log("Response saved in CTR");
   });
 }
