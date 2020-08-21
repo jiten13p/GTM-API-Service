@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Accounts</title>
 
+    <!-- Tailwind CDN -->
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://pagecdn.io/lib/font-awesome/5.10.0-11/css/all.min.css"
+      integrity="sha256-p9TTWD+813MlLaxMXMbTA7wN/ArzGyW/L7c5+KkjOkM="
+      crossorigin="anonymous"
+    />
+
     <link rel="stylesheet" href="../css/style.css" />
 
     <script src="../js/auth.js?onload=checkAuth"></script>
@@ -12,13 +25,49 @@
     <script src="../js/account.js"></script>
   </head>
   <body>
-    <div class="account">
-      <h1>ACCOUNTS</h1>
+    <!-- component -->
+
+    <div
+      id="wait"
+      class="w-full h-full fixed block top-0 left-0 bg-white opacity-75 z-50"
+    >
+      <span
+        class="text-blue-500 opacity-75 top-1/2 my-0 mx-auto block relative w-0 h-0"
+        style="top: 50%;"
+      >
+        <i class="fas fa-circle-notch fa-spin fa-5x"></i>
+      </span>
+    </div>
+
+    <!-- Nav -->
+
+    <header class="text-gray-700 body-font">
+      <div
+        class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center"
+      >
+        <a
+          href="/"
+          class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
+        >
+          <img
+            src="../assets/tgm.svg"
+            fill="none"
+            class="w-16 h-16 text-white p-2 rounded-full"
+            viewBox="0 0 24 24"
+          />
+
+          <span class="ml-3 text-xl">GTM ACCOUNTS</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="account my-6">
+      <h1 class="text-2xl font-semibold">SELECT ACCOUNT</h1>
       <button
         class="btn blur"
         type="button"
         id="getAccounts"
-        style="margin-bottom: 10px;"
+        style="margin-bottom: 10px; display: none;"
         disabled
         onclick="getAccounts()"
       >
@@ -26,25 +75,161 @@
       </button>
 
       <!-- accounts -->
-      <div id="accounts"></div>
-      <br />
+      <div class="my-8" id="accounts"></div>
 
       <!-- select accounts -->
-      <select class="btn" id="select-account" onchange="getSelectedAccount()">
-        <option value="NULL" path="NULL">Select</option>
-      </select>
-      <br />
+      <div class="my-4 inline-block relative w-64">
+        <select
+          class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+          id="select-account"
+          onchange="getSelectedAccount()"
+        >
+          <option value="NULL" path="NULL">Select</option>
+        </select>
+        <div
+          class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+        >
+          <svg
+            class="fill-current h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+            />
+          </svg>
+        </div>
+      </div>
 
       <!-- select container -->
-      <select
-        class="btn"
-        id="select-container"
-        style="margin-top: 10px;"
-        onchange="getSelectedContainer()"
-      >
-        <option value="NULL">Select</option>
-      </select>
+      <div class="inline-block relative w-64">
+        <select
+          class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+          id="select-container"
+          onchange="getSelectedContainer()"
+        >
+          <option value="NULL" path="NULL">Select</option>
+        </select>
+        <div
+          class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+        >
+          <svg
+            class="fill-current h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+            />
+          </svg>
+        </div>
+      </div>
       <br />
     </div>
+
+    <!-- List -->
+    <div class="flex justify-around">
+      <div class="flex flex-col .w-4/5">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <h1 class="flex justify-center my-4 text-xl font-semibold">Tags</h1>
+          <div class="py-2 align-middle inline-block min-w-4/5 sm:px-6 lg:px-8">
+            <div
+              class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+            >
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    <th
+                      class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      TagId
+                    </th>
+                    <th
+                      class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Name
+                    </th>
+                    <th class="px-6 py-3 bg-gray-50"></th>
+                  </tr>
+                </thead>
+                <tbody id="tag" class="bg-white divide-y divide-gray-200">
+                  <tr></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col .w-4/5">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <h1 class="flex justify-center my-4 text-xl font-semibold">
+            Triggers
+          </h1>
+          <div class="py-2 align-middle inline-block min-w-4/5 sm:px-6 lg:px-8">
+            <div
+              class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+            >
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    <th
+                      class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      TriggerId
+                    </th>
+                    <th
+                      class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Name
+                    </th>
+                    <th class="px-6 py-3 bg-gray-50"></th>
+                  </tr>
+                </thead>
+                <tbody id="trigger" class="bg-white divide-y divide-gray-200">
+                  <tr></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col .w-4/5">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <h1 class="flex justify-center my-4 text-xl font-semibold">
+            Variables
+          </h1>
+          <div class="py-2 align-middle inline-block min-w-4/5 sm:px-6 lg:px-8">
+            <div
+              class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+            >
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    <th
+                      class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      VariableId
+                    </th>
+                    <th
+                      class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Name
+                    </th>
+                    <th class="px-6 py-3 bg-gray-50"></th>
+                  </tr>
+                </thead>
+                <tbody id="variable" class="bg-white divide-y divide-gray-200">
+                  <tr></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tag-list"></div>
   </body>
 </html>

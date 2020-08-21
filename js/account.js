@@ -12,8 +12,6 @@ CTR = {};
 
 //Find Accounts
 function findAccounts() {
-  document.getElementById("getAccounts").disabled = true;
-  document.getElementById("getAccounts").style.display = "none";
   var request = gapi.client.tagmanager.accounts.list({});
   return requestPromise(request).then((response) => {
     var accounts = response.account || [];
@@ -55,7 +53,7 @@ function findContainer(accountPath, containerName) {
 async function getAccounts() {
   const div = document.createElement("div");
   await findAccounts().then((res) => {
-    ACCOUNTS = res;
+    SelectAccount(res);
     res.forEach((element) => {
       const p = document.createElement("p");
       p.innerHTML = `AccountId: ${element.accountId} <br/> Path: ${element.path} <br/> Name: ${element.name} <br/>`;
@@ -63,13 +61,13 @@ async function getAccounts() {
     });
   });
   document.getElementById("accounts").appendChild(div);
-  SelectAccount();
+  document.getElementById("wait").style.display = "none";
 }
 
 //Select Account
-function SelectAccount() {
+function SelectAccount(accounts) {
   const select = document.getElementById("select-account");
-  ACCOUNTS.forEach((element) => {
+  accounts.forEach((element) => {
     const option = document.createElement("option");
     option.setAttribute("value", element.name);
     option.setAttribute("path", element.path);
@@ -107,7 +105,7 @@ function selectContainer(selectedAccountPath) {
   });
 }
 
-// get Selected Account
+// get Selected Container
 function getSelectedContainer() {
   const select = document.getElementById("select-container");
   var selectedContainer = select.options[select.selectedIndex].getAttribute(
@@ -120,6 +118,7 @@ function getSelectedContainer() {
 
   sessionStorage.setItem("CONTAINER_NAME", selectedContainerName);
   console.log(selectedContainerName);
+  document.getElementById("wait").style.display = "block";
   findWorkspace();
   getVersion();
 }
@@ -246,5 +245,87 @@ function getCTR(path) {
   return requestPromise(request).then((response) => {
     CTR = response;
     console.log("Response saved in CTR");
+    tagList();
+    triggerList();
+    variableList();
+    document.getElementById("wait").style.display = "none";
+  });
+}
+
+function tagList() {
+  var list = document.getElementById("tag");
+  CTR.tag.forEach((element) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<tr>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="flex items-center">
+                        <div class="ml-4">
+                          <div
+                            class="text-sm leading-5 font-medium text-gray-900"
+                          >
+                            ${element.tagId}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="text-sm leading-5 text-gray-900">
+                        ${element.name}
+                      </div>
+                    </td>
+                  </tr>`;
+    list.appendChild(tr);
+  });
+}
+
+function triggerList() {
+  var list = document.getElementById("trigger");
+  CTR.trigger.forEach((element) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<tr>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="flex items-center">
+                        <div class="ml-4">
+                          <div
+                            class="text-sm leading-5 font-medium text-gray-900"
+                          >
+                            ${element.triggerId}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="text-sm leading-5 text-gray-900">
+                        ${element.name}
+                      </div>
+                    </td>
+                  </tr>`;
+    list.appendChild(tr);
+  });
+}
+
+function variableList() {
+  var list = document.getElementById("variable");
+  CTR.variable.forEach((element) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<tr>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="flex items-center">
+                        <div class="ml-4">
+                          <div
+                            class="text-sm leading-5 font-medium text-gray-900"
+                          >
+                            ${element.variableId}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="text-sm leading-5 text-gray-900">
+                        ${element.name}
+                      </div>
+                    </td>
+                  </tr>`;
+    list.appendChild(tr);
   });
 }
