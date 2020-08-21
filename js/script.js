@@ -1,11 +1,10 @@
 //Success function
 function Success() {
   if (SUCCESS == true) {
-    document.getElementById("auth").innerText = "Success";
-    //document.getElementById("proceed").style.display = "none";
-    document.getElementById("auth").style.display = "none";
     setTimeout(function () {
       document.getElementById("proceed").click();
+      document.getElementById("auth").innerText = "Authenticated";
+      document.getElementById("proceed").style.display = "block";
     }, 100);
   }
 }
