@@ -15,6 +15,20 @@ html {
   align-items: center;
 }
 
+.fa-plus,
+.fa-times {
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.fa-plus {
+  color: green;
+}
+
+.fa-times {
+  color: red;
+}
+
 .btn {
   font-size: 16px;
   padding: 6px 12px;

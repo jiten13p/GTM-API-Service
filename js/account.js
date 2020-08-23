@@ -51,16 +51,9 @@ function findContainer(accountPath, containerName) {
 
 //Retrive Accounts
 async function getAccounts() {
-  const div = document.createElement("div");
   await findAccounts().then((res) => {
     SelectAccount(res);
-    res.forEach((element) => {
-      const p = document.createElement("p");
-      p.innerHTML = `AccountId: ${element.accountId} <br/> Path: ${element.path} <br/> Name: ${element.name} <br/>`;
-      div.appendChild(p);
-    });
   });
-  document.getElementById("accounts").appendChild(div);
   document.getElementById("wait").style.display = "none";
 }
 
@@ -84,6 +77,8 @@ function getSelectedAccount() {
   );
   sessionStorage.clear();
   sessionStorage.setItem("ACCOUNT", selectedAccount);
+  document.getElementById("gtm-acc").innerHTML =
+    "GTM ACCOUNTS : <b>" + selectedAccount + "</b>";
   var selectedAccountPath = select.options[select.selectedIndex].getAttribute(
     "path"
   );
@@ -275,7 +270,9 @@ function tagList() {
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                       <div class="text-sm leading-5 text-gray-900">
-                        <button id="add${element.tagId}" onclick="add(${element.tagId})">+</button>
+                        <button id="add${element.tagId}" onclick="addTag(${element.tagId})">
+                          <i class="fas fa-plus"></i>
+                        </button>
                       </div>
                     </td>
                   </tr>`;
@@ -306,7 +303,9 @@ function triggerList() {
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                       <div class="text-sm leading-5 text-gray-900">
-                        <button id="add${element.triggerId}" onclick="add(${element.triggerId})">+</button>
+                        <button id="add${element.triggerId}" onclick="addTrigger(${element.triggerId})">
+                          <i class="fas fa-plus"></i>
+                        </button>
                       </div>
                     </td>
                   </tr>`;
@@ -337,7 +336,9 @@ function variableList() {
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                       <div class="text-sm leading-5 text-gray-900">
-                        <button id="add${element.variableId}" onclick="add(${element.variableId})">+</button>
+                        <button id="add${element.variableId}" onclick="addVar(${element.variableId})">
+                          <i class="fas fa-plus"></i>
+                        </button>
                       </div>
                     </td>
                   </tr>`;
@@ -345,7 +346,78 @@ function variableList() {
   });
 }
 
-function add(id) {
-  document.getElementById("add" + id).innerText = "x";
-  console.log(id);
+// Cart Arrays
+
+tagCart = [];
+triggerCart = [];
+varCart = [];
+
+// Cart Functions
+
+function addTag(id) {
+  var toggle = document.getElementById("add" + id).innerHTML;
+
+  if (toggle == `<i class="fas fa-plus"></i>`) {
+    document.getElementById(
+      "add" + id
+    ).innerHTML = `<i class="fas fa-times"></i>`;
+  } else {
+    document.getElementById(
+      "add" + id
+    ).innerHTML = `<i class="fas fa-plus"></i>`;
+  }
+
+  tagCart.push(id);
+  tagCart = tagCart.filter((v, i, a) => a.indexOf(v) === i);
 }
+
+function addTrigger(id) {
+  var toggle = document.getElementById("add" + id).innerHTML;
+
+  if (toggle == `<i class="fas fa-plus"></i>`) {
+    document.getElementById(
+      "add" + id
+    ).innerHTML = `<i class="fas fa-times"></i>`;
+  } else {
+    document.getElementById(
+      "add" + id
+    ).innerHTML = `<i class="fas fa-plus"></i>`;
+  }
+
+  triggerCart.push(id);
+  triggerCart = triggerCart.filter((v, i, a) => a.indexOf(v) === i);
+}
+
+function addVar(id) {
+  var toggle = document.getElementById("add" + id).innerHTML;
+
+  if (toggle == `<i class="fas fa-plus"></i>`) {
+    document.getElementById(
+      "add" + id
+    ).innerHTML = `<i class="fas fa-times"></i>`;
+  } else {
+    document.getElementById(
+      "add" + id
+    ).innerHTML = `<i class="fas fa-plus"></i>`;
+  }
+
+  varCart.push(id);
+  varCart = varCart.filter((v, i, a) => a.indexOf(v) === i);
+}
+
+// Edit Functions
+
+function editTags() {
+  // var final = CTR.tag.forEach((element) => {
+  //   for (const key in element) {
+  //     if (tagCart.find((tag) => element[key].tag == tag)) {
+  //       return element;
+  //     }
+  //   }
+  // });
+  // console.log(final);
+}
+
+function editTriggers() {}
+
+function editVariables() {}
