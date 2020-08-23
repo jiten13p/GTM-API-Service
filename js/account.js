@@ -273,6 +273,11 @@ function tagList() {
                         ${element.name}
                       </div>
                     </td>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="text-sm leading-5 text-gray-900">
+                        <button id="add${element.tagId}" onclick="add(${element.tagId})">+</button>
+                      </div>
+                    </td>
                   </tr>`;
     list.appendChild(tr);
   });
@@ -297,6 +302,11 @@ function triggerList() {
                     <td class="px-6 py-4 whitespace-no-wrap">
                       <div class="text-sm leading-5 text-gray-900">
                         ${element.name}
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="text-sm leading-5 text-gray-900">
+                        <button id="add${element.triggerId}" onclick="add(${element.triggerId})">+</button>
                       </div>
                     </td>
                   </tr>`;
@@ -325,7 +335,17 @@ function variableList() {
                         ${element.name}
                       </div>
                     </td>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="text-sm leading-5 text-gray-900">
+                        <button id="add${element.variableId}" onclick="add(${element.variableId})">+</button>
+                      </div>
+                    </td>
                   </tr>`;
     list.appendChild(tr);
   });
+}
+
+function add(id) {
+  document.getElementById("add" + id).innerText = "x";
+  console.log(id);
 }
