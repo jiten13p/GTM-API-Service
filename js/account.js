@@ -77,8 +77,10 @@ function getSelectedAccount() {
   );
   sessionStorage.clear();
   sessionStorage.setItem("ACCOUNT", selectedAccount);
+
   document.getElementById("gtm-acc").innerHTML =
-    "GTM ACCOUNTS : <b>" + selectedAccount + "</b>";
+    "GTM ACCOUNTS > <b>" + selectedAccount + "</b>";
+
   var selectedAccountPath = select.options[select.selectedIndex].getAttribute(
     "path"
   );
@@ -112,6 +114,14 @@ function getSelectedContainer() {
   var selectedContainerName = selectedContainerPath.split(":")[0];
 
   sessionStorage.setItem("CONTAINER_NAME", selectedContainerName);
+
+  document.getElementById("gtm-acc").innerHTML =
+    "GTM ACCOUNTS > <b>" +
+    sessionStorage.getItem("ACCOUNT") +
+    " > " +
+    selectedContainerName +
+    "</b>";
+
   console.log(selectedContainerName);
   document.getElementById("wait").style.display = "block";
   findWorkspace();
@@ -129,8 +139,7 @@ function findWorkspace() {
     parent: path,
   });
   return requestPromise(request).then((response) => {
-    var workspacesArr = response;
-    workspacesArr.workspace.forEach((space) => {
+    response.workspace.forEach((space) => {
       tags(space.path);
       triggers(space.path);
       variables(space.path);
@@ -221,14 +230,21 @@ function getVersion() {
     "/containers/" +
     sessionStorage.getItem("CONTAINER");
 
-  console.log(path);
   var request = gapi.client.tagmanager.accounts.containers.version_headers.latest(
     {
       parent: path,
     }
   );
+
   return requestPromise(request).then((response) => {
-    getCTR(response.path);
+    if (response.path != "accounts/0/containers/0/versions/0") {
+      getCTR(response.path);
+    } else {
+      console.log("404 VERSION NOT FOUND !!!");
+      document.getElementById("select-acc").innerText =
+        "404 VERSION NOT FOUND! KINDLY CREATE A VERSION!";
+      document.getElementById("wait").style.display = "none";
+    }
   });
 }
 
@@ -408,16 +424,40 @@ function addVar(id) {
 // Edit Functions
 
 function editTags() {
-  // var final = CTR.tag.forEach((element) => {
-  //   for (const key in element) {
-  //     if (tagCart.find((tag) => element[key].tag == tag)) {
-  //       return element;
-  //     }
-  //   }
-  // });
-  // console.log(final);
+  var finalTags = [];
+
+  CTR.tag.forEach((element) => {
+    tagCart.forEach((tag) => {
+      if (tag == element.tagId) {
+        finalTags.push(element);
+      }
+    });
+  });
+  console.log(finalTags);
 }
 
-function editTriggers() {}
+function editTriggers() {
+  var finalTriggers = [];
 
-function editVariables() {}
+  CTR.trigger.forEach((element) => {
+    triggerCart.forEach((trigger) => {
+      if (trigger == element.triggerId) {
+        finalTriggers.push(element);
+      }
+    });
+  });
+  console.log(finalTriggers);
+}
+
+function editVariables() {
+  var finalVariables = [];
+
+  CTR.variable.forEach((element) => {
+    varCart.forEach((vars) => {
+      if (vars == element.variableId) {
+        finalVariables.push(element);
+      }
+    });
+  });
+  console.log(finalVariables);
+}
