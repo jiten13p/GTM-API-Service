@@ -54,19 +54,24 @@ async function getAccounts() {
   await findAccounts().then((res) => {
     SelectAccount(res);
   });
+  document.getElementById("select-component").selectedIndex = 0;
   document.getElementById("wait").style.display = "none";
 }
 
 //Select Account
 function SelectAccount(accounts) {
   const select = document.getElementById("select-account");
-  accounts.forEach((element) => {
-    const option = document.createElement("option");
-    option.setAttribute("value", element.name);
-    option.setAttribute("path", element.path);
-    option.innerText = element.name;
-    select.appendChild(option);
-  });
+  if (select.childElementCount > 1) {
+    return;
+  } else {
+    accounts.forEach((element) => {
+      const option = document.createElement("option");
+      option.setAttribute("value", element.name);
+      option.setAttribute("path", element.path);
+      option.innerText = element.name;
+      select.appendChild(option);
+    });
+  }
 }
 
 // get Selected Account
@@ -75,31 +80,43 @@ function getSelectedAccount() {
   var selectedAccount = select.options[select.selectedIndex].getAttribute(
     "value"
   );
-  sessionStorage.clear();
-  sessionStorage.setItem("ACCOUNT", selectedAccount);
 
-  document.getElementById("gtm-acc").innerHTML =
-    "GTM ACCOUNTS > <b>" + selectedAccount + "</b>";
+  if (selectedAccount == "NULL") {
+    document.getElementById("gtm-acc").innerHTML = "GTM ACCOUNTS";
+    document.getElementById("select-container").selectedIndex = 0;
+    document.getElementById("select-component").selectedIndex = 0;
+  } else {
+    sessionStorage.clear();
+    sessionStorage.setItem("ACCOUNT", selectedAccount);
 
-  var selectedAccountPath = select.options[select.selectedIndex].getAttribute(
-    "path"
-  );
-  sessionStorage.setItem("ACCOUNT_PATH", selectedAccountPath);
-  console.log(selectedAccountPath);
-  selectContainer(selectedAccountPath);
+    document.getElementById("gtm-acc").innerHTML =
+      "GTM ACCOUNTS > <b>" + selectedAccount + "</b>";
+
+    var selectedAccountPath = select.options[select.selectedIndex].getAttribute(
+      "path"
+    );
+    sessionStorage.setItem("ACCOUNT_PATH", selectedAccountPath);
+    console.log(selectedAccountPath);
+    document.getElementById("select-container").disabled = false;
+    selectContainer(selectedAccountPath);
+  }
 }
 
 //Select Container
 function selectContainer(selectedAccountPath) {
   const select = document.getElementById("select-container");
-  findContainers(selectedAccountPath).then((res) => {
-    res.forEach((element) => {
-      const option = document.createElement("option");
-      option.setAttribute("value", element.containerId);
-      option.innerText = element.name + ": " + element.containerId;
-      select.appendChild(option);
+  if (select.childElementCount > 1) {
+    return;
+  } else {
+    findContainers(selectedAccountPath).then((res) => {
+      res.forEach((element) => {
+        const option = document.createElement("option");
+        option.setAttribute("value", element.containerId);
+        option.innerText = element.name + ": " + element.containerId;
+        select.appendChild(option);
+      });
     });
-  });
+  }
 }
 
 // get Selected Container
@@ -108,24 +125,32 @@ function getSelectedContainer() {
   var selectedContainer = select.options[select.selectedIndex].getAttribute(
     "value"
   );
-  sessionStorage.setItem("CONTAINER", selectedContainer);
-  var selectedContainerPath = select.options[select.selectedIndex].innerText;
 
-  var selectedContainerName = selectedContainerPath.split(":")[0];
+  if (selectedContainer == "NULL") {
+    document.getElementById("gtm-acc").innerHTML =
+      "GTM ACCOUNTS > <b>" + sessionStorage.getItem("ACCOUNT") + "</b>";
+    document.getElementById("select-component").selectedIndex = 0;
+  } else {
+    sessionStorage.setItem("CONTAINER", selectedContainer);
+    var selectedContainerPath = select.options[select.selectedIndex].innerText;
 
-  sessionStorage.setItem("CONTAINER_NAME", selectedContainerName);
+    var selectedContainerName = selectedContainerPath.split(":")[0];
 
-  document.getElementById("gtm-acc").innerHTML =
-    "GTM ACCOUNTS > <b>" +
-    sessionStorage.getItem("ACCOUNT") +
-    " > " +
-    selectedContainerName +
-    "</b>";
+    sessionStorage.setItem("CONTAINER_NAME", selectedContainerName);
 
-  console.log(selectedContainerName);
-  document.getElementById("wait").style.display = "block";
-  findWorkspace();
-  getVersion();
+    document.getElementById("gtm-acc").innerHTML =
+      "GTM ACCOUNTS > <b>" +
+      sessionStorage.getItem("ACCOUNT") +
+      " > " +
+      selectedContainerName +
+      "</b>";
+
+    console.log(selectedContainerName);
+    document.getElementById("wait").style.display = "block";
+    document.getElementById("select-component").disabled = false;
+    findWorkspace();
+    getVersion();
+  }
 }
 
 // Find Workspace
@@ -256,15 +281,70 @@ function getCTR(path) {
   return requestPromise(request).then((response) => {
     CTR = response;
     console.log("Response saved in CTR");
-    tagList();
-    triggerList();
-    variableList();
     document.getElementById("wait").style.display = "none";
   });
 }
 
+function getSelectedComponent() {
+  document.getElementById("component-list").classList.remove("hidden");
+  document.getElementById("wait").style.display = "block";
+
+  const select = document.getElementById("select-component");
+  var selectedComponent = select.options[select.selectedIndex].getAttribute(
+    "value"
+  );
+
+  if (selectedComponent == "NULL") {
+    var list = document.getElementById("component");
+    document.getElementById("gtm-acc").innerHTML =
+      "GTM ACCOUNTS > <b>" +
+      sessionStorage.getItem("ACCOUNT") +
+      " > " +
+      sessionStorage.getItem("CONTAINER_NAME") +
+      "</b>";
+    list.innerHTML = "";
+
+    document.getElementById("component-list").classList.add("hidden");
+    document.getElementById("component-name").innerText = "Component List";
+    document.getElementById("edit-button").innerText = "Edit";
+    document.getElementById("wait").style.display = "none";
+  } else {
+    document.getElementById("gtm-acc").innerHTML =
+      "GTM ACCOUNTS > <b>" +
+      sessionStorage.getItem("ACCOUNT") +
+      " > " +
+      sessionStorage.getItem("CONTAINER_NAME") +
+      " > " +
+      selectedComponent +
+      "</b>";
+
+    if (selectedComponent == "Tags") {
+      document.getElementById("component-name").innerText =
+        selectedComponent + " List";
+      document.getElementById("edit-button").innerText = "Edit Selected Tags";
+
+      tagList();
+    } else if (selectedComponent == "Triggers") {
+      document.getElementById("component-name").innerText =
+        selectedComponent + " List";
+      document.getElementById("edit-button").innerText =
+        "Edit Selected Triggers";
+
+      triggerList();
+    } else if (selectedComponent == "Variables") {
+      document.getElementById("component-name").innerText =
+        selectedComponent + " List";
+      document.getElementById("edit-button").innerText =
+        "Edit Selected Variables";
+
+      variableList();
+    }
+  }
+}
+
 function tagList() {
-  var list = document.getElementById("tag");
+  var list = document.getElementById("component");
+  list.innerHTML = "";
   CTR.tag.forEach((element) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `<tr>
@@ -286,18 +366,20 @@ function tagList() {
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                       <div class="text-sm leading-5 text-gray-900">
-                        <button id="add${element.tagId}" onclick="addTag(${element.tagId})">
+                        <button id="add${element.tagId}" onclick="add(${element.tagId})">
                           <i class="fas fa-plus"></i>
                         </button>
                       </div>
                     </td>
                   </tr>`;
     list.appendChild(tr);
+    document.getElementById("wait").style.display = "none";
   });
 }
 
 function triggerList() {
-  var list = document.getElementById("trigger");
+  var list = document.getElementById("component");
+  list.innerHTML = "";
   CTR.trigger.forEach((element) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `<tr>
@@ -319,18 +401,20 @@ function triggerList() {
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                       <div class="text-sm leading-5 text-gray-900">
-                        <button id="add${element.triggerId}" onclick="addTrigger(${element.triggerId})">
+                        <button id="add${element.triggerId}" onclick="add(${element.triggerId})">
                           <i class="fas fa-plus"></i>
                         </button>
                       </div>
                     </td>
                   </tr>`;
     list.appendChild(tr);
+    document.getElementById("wait").style.display = "none";
   });
 }
 
 function variableList() {
-  var list = document.getElementById("variable");
+  var list = document.getElementById("component");
+  list.innerHTML = "";
   CTR.variable.forEach((element) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `<tr>
@@ -352,25 +436,24 @@ function variableList() {
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                       <div class="text-sm leading-5 text-gray-900">
-                        <button id="add${element.variableId}" onclick="addVar(${element.variableId})">
+                        <button id="add${element.variableId}" onclick="add(${element.variableId})">
                           <i class="fas fa-plus"></i>
                         </button>
                       </div>
                     </td>
                   </tr>`;
     list.appendChild(tr);
+    document.getElementById("wait").style.display = "none";
   });
 }
 
 // Cart Arrays
 
-tagCart = [];
-triggerCart = [];
-varCart = [];
+Cart = [];
 
 // Cart Functions
 
-function addTag(id) {
+function add(id) {
   var toggle = document.getElementById("add" + id).innerHTML;
 
   if (toggle == `<i class="fas fa-plus"></i>`) {
@@ -383,51 +466,32 @@ function addTag(id) {
     ).innerHTML = `<i class="fas fa-plus"></i>`;
   }
 
-  tagCart.push(id);
-  tagCart = tagCart.filter((v, i, a) => a.indexOf(v) === i);
-}
-
-function addTrigger(id) {
-  var toggle = document.getElementById("add" + id).innerHTML;
-
-  if (toggle == `<i class="fas fa-plus"></i>`) {
-    document.getElementById(
-      "add" + id
-    ).innerHTML = `<i class="fas fa-times"></i>`;
-  } else {
-    document.getElementById(
-      "add" + id
-    ).innerHTML = `<i class="fas fa-plus"></i>`;
-  }
-
-  triggerCart.push(id);
-  triggerCart = triggerCart.filter((v, i, a) => a.indexOf(v) === i);
-}
-
-function addVar(id) {
-  var toggle = document.getElementById("add" + id).innerHTML;
-
-  if (toggle == `<i class="fas fa-plus"></i>`) {
-    document.getElementById(
-      "add" + id
-    ).innerHTML = `<i class="fas fa-times"></i>`;
-  } else {
-    document.getElementById(
-      "add" + id
-    ).innerHTML = `<i class="fas fa-plus"></i>`;
-  }
-
-  varCart.push(id);
-  varCart = varCart.filter((v, i, a) => a.indexOf(v) === i);
+  Cart.push(id);
+  Cart = Cart.filter((v, i, a) => a.indexOf(v) === i);
 }
 
 // Edit Functions
+
+function edit() {
+  const select = document.getElementById("select-component");
+  var selectedComponent = select.options[select.selectedIndex].getAttribute(
+    "value"
+  );
+
+  if (selectedComponent == "Tags") {
+    editTags();
+  } else if (selectedComponent == "Triggers") {
+    editTriggers();
+  } else if (selectedComponent == "Variables") {
+    editVariables();
+  }
+}
 
 function editTags() {
   var finalTags = [];
 
   CTR.tag.forEach((element) => {
-    tagCart.forEach((tag) => {
+    Cart.forEach((tag) => {
       if (tag == element.tagId) {
         finalTags.push(element);
       }
@@ -440,7 +504,7 @@ function editTriggers() {
   var finalTriggers = [];
 
   CTR.trigger.forEach((element) => {
-    triggerCart.forEach((trigger) => {
+    Cart.forEach((trigger) => {
       if (trigger == element.triggerId) {
         finalTriggers.push(element);
       }
@@ -453,7 +517,7 @@ function editVariables() {
   var finalVariables = [];
 
   CTR.variable.forEach((element) => {
-    varCart.forEach((vars) => {
+    Cart.forEach((vars) => {
       if (vars == element.variableId) {
         finalVariables.push(element);
       }
