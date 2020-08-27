@@ -7,6 +7,15 @@ function Success() {
   }, 200);
 }
 
+//Modal
+function toggleModal() {
+  const body = document.getElementById("modal-body");
+  const modal = document.querySelector(".modal");
+  modal.classList.toggle("opacity-0");
+  modal.classList.toggle("pointer-events-none");
+  body.classList.toggle("modal-active");
+}
+
 //Global
 CTR = {};
 
@@ -498,6 +507,7 @@ function editTags() {
     });
   });
   console.log(finalTags);
+  toggleModal();
 }
 
 function editTriggers() {
@@ -511,6 +521,7 @@ function editTriggers() {
     });
   });
   console.log(finalTriggers);
+  toggleModal();
 }
 
 function editVariables() {
@@ -524,4 +535,5 @@ function editVariables() {
     });
   });
   console.log(finalVariables);
+  toggleModal();
 }
