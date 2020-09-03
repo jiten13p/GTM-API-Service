@@ -541,5 +541,6 @@ function editVariables() {
 }
 
 function update() {
-  console.log("Update Called");
+  var body = document.getElementById("body");
+  console.log(body.value);
 }

@@ -241,6 +241,7 @@
 
             <!--Body-->
             <form
+              id="myForm"
               name="myForm"
               action=""
               onsubmit="event.preventDefault(); update();"
@@ -251,14 +252,24 @@
                   class="block text-gray-700 text-sm font-bold mb-2"
                   for="username"
                 >
-                  Username
+                  Request body
                 </label>
-                <input
+                <textarea
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="username"
+                  id="body"
+                  type="text"
+                  placeholder="Request body"
+                  rows="5"
+                  cols="50"
+                  name="comment"
+                  form="myForm"
+                ></textarea>
+                <!-- <input
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="body"
                   type="text"
                   placeholder="Username"
-                />
+                /> -->
               </div>
               <div class="flex justify-end pt-2">
                 <button
