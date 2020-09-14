@@ -7,8 +7,29 @@ function Success() {
   }, 200);
 }
 
+EDITOR = {};
+
+selectedComponent = "";
+
 //Modal
 function toggleModal() {
+  // -------------------------
+
+  // create the editor
+  // const editId = document.getElementById("jsoneditor");
+  // const options = {};
+  // EDITOR = new JSONEditor(editId, options);
+
+  // // set json
+  // const initialJson = {
+  //   type: "",
+  //   key: "",
+  //   value: "",
+  // };
+  // EDITOR.set(initialJson);
+
+  // -------------------------
+
   const body = document.getElementById("modal-body");
   const modal = document.querySelector(".modal");
   modal.classList.toggle("opacity-0");
@@ -63,7 +84,7 @@ async function getAccounts() {
   await findAccounts().then((res) => {
     SelectAccount(res);
   });
-  document.getElementById("select-component").selectedIndex = 0;
+  // document.getElementById("select-component").selectedIndex = 0;
   document.getElementById("wait").style.display = "none";
 }
 
@@ -93,7 +114,7 @@ function getSelectedAccount() {
   if (selectedAccount == "NULL") {
     document.getElementById("gtm-acc").innerHTML = "GTM ACCOUNTS";
     document.getElementById("select-container").selectedIndex = 0;
-    document.getElementById("select-component").selectedIndex = 0;
+    // document.getElementById("select-component").selectedIndex = 0;
   } else {
     sessionStorage.clear();
     sessionStorage.setItem("ACCOUNT", selectedAccount);
@@ -138,7 +159,7 @@ function getSelectedContainer() {
   if (selectedContainer == "NULL") {
     document.getElementById("gtm-acc").innerHTML =
       "GTM ACCOUNTS > <b>" + sessionStorage.getItem("ACCOUNT") + "</b>";
-    document.getElementById("select-component").selectedIndex = 0;
+    // document.getElementById("select-component").selectedIndex = 0;
   } else {
     sessionStorage.setItem("CONTAINER", selectedContainer);
     var selectedContainerPath = select.options[select.selectedIndex].innerText;
@@ -155,7 +176,7 @@ function getSelectedContainer() {
 
     console.log(selectedContainerName);
     document.getElementById("wait").style.display = "block";
-    document.getElementById("select-component").disabled = false;
+    // document.getElementById("select-component").disabled = false;
     findWorkspace();
     getVersion();
   }
@@ -173,6 +194,8 @@ function findWorkspace() {
   });
   return requestPromise(request).then((response) => {
     response.workspace.forEach((space) => {
+      sessionStorage.setItem("WPATH", space.path);
+
       tags(space.path);
       triggers(space.path);
       variables(space.path);
@@ -200,7 +223,7 @@ function getTag(path) {
     path,
   });
   return requestPromise(request).then((response) => {
-    // console.log(response);
+    return response;
   });
 }
 
@@ -293,17 +316,15 @@ function getCTR(path) {
     CTR = response;
     console.log("Response saved in CTR");
     document.getElementById("wait").style.display = "none";
+    // createHelloWorldTrigger();
   });
 }
 
-function getSelectedComponent() {
+function getSelectedComponent(selected) {
   document.getElementById("component-list").classList.remove("hidden");
   document.getElementById("wait").style.display = "block";
 
-  const select = document.getElementById("select-component");
-  var selectedComponent = select.options[select.selectedIndex].getAttribute(
-    "value"
-  );
+  selectedComponent = selected;
 
   if (selectedComponent == "NULL") {
     var list = document.getElementById("component");
@@ -360,26 +381,24 @@ function tagList() {
     const tr = document.createElement("tr");
     tr.innerHTML = `<tr>
                     <td class="px-6 py-4 whitespace-no-wrap">
-                      <div class="flex items-center">
-                        <div class="ml-4">
-                          <div
-                            class="text-sm leading-5 font-medium text-gray-900"
-                          >
-                            ${element.tagId}
-                          </div>
-                        </div>
+                      <div class="text-sm leading-5 text-gray-900">
+                        <input type="checkbox" class="check" id=${element.tagId}>
+                        </input>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="text-sm leading-5 text-gray-900">
+                        ${element.tagId}
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="text-sm leading-5 text-gray-900">
+                        ${element.type}
                       </div>
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                       <div class="text-sm leading-5 text-gray-900">
                         ${element.name}
-                      </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-no-wrap">
-                      <div class="text-sm leading-5 text-gray-900">
-                        <button id="add${element.tagId}" onclick="add(${element.tagId})">
-                          <i class="fas fa-plus"></i>
-                        </button>
                       </div>
                     </td>
                   </tr>`;
@@ -395,26 +414,24 @@ function triggerList() {
     const tr = document.createElement("tr");
     tr.innerHTML = `<tr>
                     <td class="px-6 py-4 whitespace-no-wrap">
-                      <div class="flex items-center">
-                        <div class="ml-4">
-                          <div
-                            class="text-sm leading-5 font-medium text-gray-900"
-                          >
-                            ${element.triggerId}
-                          </div>
-                        </div>
+                      <div class="text-sm leading-5 text-gray-900">
+                        <input type="checkbox" class="check" id=${element.triggerId}>
+                        </input>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="text-sm leading-5 text-gray-900">
+                        ${element.triggerId}
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="text-sm leading-5 text-gray-900">
+                        ${element.type}
                       </div>
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                       <div class="text-sm leading-5 text-gray-900">
                         ${element.name}
-                      </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-no-wrap">
-                      <div class="text-sm leading-5 text-gray-900">
-                        <button id="add${element.triggerId}" onclick="add(${element.triggerId})">
-                          <i class="fas fa-plus"></i>
-                        </button>
                       </div>
                     </td>
                   </tr>`;
@@ -430,26 +447,24 @@ function variableList() {
     const tr = document.createElement("tr");
     tr.innerHTML = `<tr>
                     <td class="px-6 py-4 whitespace-no-wrap">
-                      <div class="flex items-center">
-                        <div class="ml-4">
-                          <div
-                            class="text-sm leading-5 font-medium text-gray-900"
-                          >
-                            ${element.variableId}
-                          </div>
-                        </div>
+                      <div class="text-sm leading-5 text-gray-900">
+                        <input type="checkbox" class="check" id=${element.variableId}>
+                        </input>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="text-sm leading-5 text-gray-900">
+                        ${element.variableId}
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                      <div class="text-sm leading-5 text-gray-900">
+                        ${element.type}
                       </div>
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                       <div class="text-sm leading-5 text-gray-900">
                         ${element.name}
-                      </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-no-wrap">
-                      <div class="text-sm leading-5 text-gray-900">
-                        <button id="add${element.variableId}" onclick="add(${element.variableId})">
-                          <i class="fas fa-plus"></i>
-                        </button>
                       </div>
                     </td>
                   </tr>`;
@@ -462,32 +477,17 @@ function variableList() {
 
 Cart = [];
 
-// Cart Functions
+// Edit Functions
+function edit() {
+  var checkArray = document.getElementsByClassName("check");
 
-function add(id) {
-  var toggle = document.getElementById("add" + id).innerHTML;
-
-  if (toggle == `<i class="fas fa-plus"></i>`) {
-    document.getElementById(
-      "add" + id
-    ).innerHTML = `<i class="fas fa-times"></i>`;
-  } else {
-    document.getElementById(
-      "add" + id
-    ).innerHTML = `<i class="fas fa-plus"></i>`;
+  for (i in checkArray) {
+    if (checkArray[i].checked == true) {
+      Cart.push(checkArray[i].id);
+    }
   }
 
-  Cart.push(id);
   Cart = Cart.filter((v, i, a) => a.indexOf(v) === i);
-}
-
-// Edit Functions
-
-function edit() {
-  const select = document.getElementById("select-component");
-  var selectedComponent = select.options[select.selectedIndex].getAttribute(
-    "value"
-  );
 
   if (selectedComponent == "Tags") {
     editTags();
@@ -540,7 +540,61 @@ function editVariables() {
   toggleModal();
 }
 
-function update() {
-  var body = document.getElementById("body");
-  console.log(body.value);
+function deleteSelected() {
+  Cart.forEach(async (id) => {
+    var path = (await sessionStorage.getItem("WPATH")) + "/tags/" + id;
+    console.log(path);
+
+    var request = await gapi.client.tagmanager.accounts.containers.workspaces.tags.delete(
+      {
+        path,
+      }
+    );
+    return requestPromise(request).then(async (response) => {
+      await console.log(response);
+    });
+  });
+
+  toggleModal();
 }
+
+async function update() {
+  var reqBody = EDITOR.get();
+
+  Cart.forEach(async (id) => {
+    await updateTag(reqBody, id);
+  });
+  toggleModal();
+}
+
+// Update a Tag
+async function updateTag(reqBody, id) {
+  path = sessionStorage.getItem("WPATH") + "/tags/" + id;
+  console.log(reqBody);
+
+  var tag = getTag(path);
+  console.log(tag);
+
+  // var request = gapi.client.tagmanager.accounts.containers.workspaces.tags.update(
+  //   {
+  //     path,
+  //   },
+  //   body
+  // );
+  // return requestPromise(request).then((response) => {
+  //   console.log(response);
+  // });
+}
+
+// function createHelloWorldTrigger() {
+//   console.log("Creating hello world trigger in workspace");
+//   path = sessionStorage.getItem("WPATH");
+//   var helloWorldTrigger = { name: "Hello World Trigger", type: "PAGEVIEW" };
+//   var request = gapi.client.tagmanager.accounts.containers.workspaces.triggers.create(
+//     { parent: path },
+//     helloWorldTrigger
+//   );
+//   return requestPromise(request).then((response) => {
+//     console.log(response);
+//   });
+// }

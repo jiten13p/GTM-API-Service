@@ -20,6 +20,21 @@
 
     <link rel="stylesheet" href="../css/style.css" />
 
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.0.5/jsoneditor.min.css"
+      integrity="sha512-PWaHjZQo6KuaDHCDvl1WEePqV8hGiJc4vzec7iH7dIX67ql/s3S47xRBptJfHfcffENdIp/pMHKY7rfkiE3Osw=="
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.0.5/jsoneditor.min.js"
+      integrity="sha512-jY7UNqh3VKmQV6sz/6h2kvK5o3wbhWmmPR7OVtKHr29SLGl6BGq4/3PaKDp8jaUBehywn6DCb22ET/PAp/wNzw=="
+      crossorigin="anonymous"
+    ></script>
+
     <script src="../js/auth.js?onload=checkAuth"></script>
     <script src="https://apis.google.com/js/client.js?onload=callAuth"></script>
     <script src="../js/account.js"></script>
@@ -47,7 +62,7 @@
       >
         <a
           href="/"
-          class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
+          class="flex title-font font-medium items-center text-gray-900 mb-2 md:mb-0"
         >
           <img
             src="../assets/tgm.svg"
@@ -61,7 +76,7 @@
       </div>
     </header>
 
-    <div class="account my-6">
+    <div class="account">
       <h1 id="select-acc" class="text-2xl font-semibold">SELECT ACCOUNT</h1>
       <button
         class="btn blur"
@@ -122,85 +137,91 @@
           </svg>
         </div>
       </div>
-
-      <!-- select tag/trigger/variable -->
-      <div class="my-2 inline-block relative w-64">
-        <select
-          disabled
-          class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-          id="select-component"
-          onchange="getSelectedComponent()"
-        >
-          <option selected value="NULL" path="NULL">Select Component</option>
-          <option value="Tags" path="NULL">Tags</option>
-          <option value="Triggers" path="NULL">Triggers</option>
-          <option value="Variables" path="NULL">Variables</option>
-        </select>
-        <div
-          class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-        >
-          <svg
-            class="fill-current h-4 w-4"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-            />
-          </svg>
-        </div>
-      </div>
     </div>
 
-    <!-- List -->
-    <div id="component-list" class="hidden flex justify-around">
-      <div class="flex flex-col .w-4/5">
-        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <h1
-            id="component-name"
-            class="flex justify-center my-4 text-xl font-semibold"
-          >
-            Component List
-          </h1>
-          <div class="py-2 align-middle inline-block min-w-4/5 sm:px-6 lg:px-8">
+    <div class="dash flex mt-6">
+      <div
+        class="side-menu flex flex-col items-center bg-blue-100 w-1/6 h-screen"
+      >
+        <h1
+          id="component-name"
+          class="flex justify-center p-4 text-xl bg-blue-300 w-full font-semibold"
+        >
+          Components
+        </h1>
+        <hr />
+        <button
+          onclick="getSelectedComponent(value)"
+          value="Tags"
+          class="menu-items hover:bg-green-300 w-full p-4 text-xl"
+        >
+          Tags
+        </button>
+        <button
+          onclick="getSelectedComponent(value)"
+          value="Triggers"
+          class="menu-items hover:bg-green-300 w-full p-4 text-xl"
+        >
+          Triggers
+        </button>
+        <button
+          onclick="getSelectedComponent(value)"
+          value="Variables"
+          class="menu-items hover:bg-green-300 w-full p-4 text-xl"
+        >
+          Variables
+        </button>
+      </div>
+
+      <!-- List -->
+      <div id="component-list" class="hidden flex ml-64">
+        <div class="flex flex-col w-full">
+          <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div
-              class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+              class="py-2 align-middle inline-block min-w-4/5 sm:px-6 lg:px-8"
             >
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead>
-                  <tr>
-                    <th
-                      class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Id
-                    </th>
-                    <th
-                      class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Name
-                    </th>
-                    <th
-                      class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Edit
-                    </th>
-                  </tr>
-                </thead>
-                <tbody
-                  id="component"
-                  class="bg-white divide-y divide-gray-200"
-                ></tbody>
-              </table>
+              <div class="shadow border-b border-gray-200 sm:rounded-lg">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <thead>
+                    <tr>
+                      <th
+                        class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Select
+                      </th>
+                      <th
+                        class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Id
+                      </th>
+                      <th
+                        class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Type
+                      </th>
+                      <th
+                        class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Name
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    id="component"
+                    class="bg-white divide-y divide-gray-200"
+                  ></tbody>
+                </table>
+              </div>
             </div>
-          </div>
-          <div class="flex justify-center my-2">
-            <button
-              onclick="edit()"
-              id="edit-button"
-              class="flex justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Edit
-            </button>
+            <div class="flex justify-center my-2">
+              <button
+                onclick="edit()"
+                id="edit-button"
+                class="flex justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Edit
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -222,7 +243,7 @@
           <div class="modal-content py-4 text-left px-6">
             <!--Title-->
             <div class="flex justify-between items-center pb-3">
-              <p class="text-2xl font-bold">Update Selected!</p>
+              <p class="text-2xl font-bold">Create a variable</p>
               <div class="modal-close cursor-pointer z-50">
                 <svg
                   onclick="toggleModal()"
@@ -244,7 +265,7 @@
               id="myForm"
               name="myForm"
               action=""
-              onsubmit="event.preventDefault(); update();"
+              onsubmit="event.preventDefault();"
               method=""
             >
               <div class="mb-4">
@@ -254,25 +275,23 @@
                 >
                   Request body
                 </label>
-                <textarea
+
+                <input
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="body"
                   type="text"
-                  placeholder="Request body"
-                  rows="5"
-                  cols="50"
-                  name="comment"
-                  form="myForm"
-                ></textarea>
-                <!-- <input
+                  placeholder="Name"
+                />
+                <input
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="body"
                   type="text"
-                  placeholder="Username"
-                /> -->
+                  placeholder="value"
+                />
               </div>
               <div class="flex justify-end pt-2">
                 <button
+                  onclick="createVar()"
                   class="modal-close px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400"
                 >
                   Update
