@@ -294,14 +294,16 @@ function getVersion() {
 
   return requestPromise(request).then((response) => {
     if (response.path != "accounts/0/containers/0/versions/0") {
-      document.getElementById("select-acc").innerText = "SELECT ACCOUNT";
+      document.getElementById("select-acc").innerText = "SELECT MENU";
+      document.getElementById("dash").classList.remove("hidden");
       getCTR(response.path);
     } else {
       console.log("404 : VERSION NOT FOUND !!!");
       document.getElementById("select-acc").innerText =
-        "404 : VERSION NOT FOUND! KINDLY CREATE A VERSION!";
+        "404 VERSION NOT FOUND! KINDLY CREATE A VERSION!";
       // var path = sessionStorage.getItem("ACCOUNT_PATH");
       // selectContainer(path);
+      document.getElementById("dash").classList.add("hidden");
       document.getElementById("wait").style.display = "none";
     }
   });
